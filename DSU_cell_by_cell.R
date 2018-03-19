@@ -15,7 +15,6 @@ library(vioplot)
 depar <- par()
 
 ## path and name of SJ merged RData
-pfsj <- file.path("/mnt/data5/BGI/UCB/tangchao/data/SJ/SJ(all_more_than_10_more_than_1_cells)_merged_touse.RData")
 
 ## path of figure/file output
 pffo <- file.path("/mnt/data5/BGI/UCB/tangchao/DSU/cell_by_cell/")

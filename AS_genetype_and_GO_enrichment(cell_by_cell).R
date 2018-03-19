@@ -1312,3 +1312,84 @@ prop.test(unprocessed, sum)
 
 
 
+
+
+
+
+#### IR GO ===================================================================================================================================================
+
+
+
+## IR
+
+load("/mnt/data5/BGI/UCB/tangchao/IR/IR_merge2/IR_GTF_merge/IR_known_introns_match.RData")
+length(unique(IR_GTF$gene_id))
+# [1] 2320
+table(IR_GTF[!duplicated(IR_GTF$gene_id),]$gene_biotype)
+#          3prime_overlapping_ncRNA                          antisense
+#                                 1                                134
+#                         IG_C_gene                          IG_V_gene
+#                                 2                                 10
+#                   IG_V_pseudogene                            lincRNA
+#                                 1                                 57
+#              processed_pseudogene               processed_transcript
+#                                 1                                 30
+#                    protein_coding                     sense_intronic
+#                              2029                                 12
+#                 sense_overlapping   transcribed_processed_pseudogene
+#                                 2                                  1
+#transcribed_unprocessed_pseudogene                          TR_C_gene
+#                                15                                  3
+#                         TR_V_gene                    TR_V_pseudogene
+#                                18                                  1
+#            unprocessed_pseudogene
+#                                 3
+
+unique(IR_GTF$gene_id) -> IR_gene_list
+
+for(i in c("IR_gene_list")){
+  ## enrichment
+  eval(parse(text = paste("genelist <- ", i, sep ="")))
+  ego_BP <- enrichGO(gene = genelist,
+                     OrgDb  = org.Hs.eg.db,keyType= 'ENSEMBL',
+                     ont  = "BP", pAdjustMethod = "BH",
+                     pvalueCutoff  = 0.05,qvalueCutoff  = 0.05)
+  ego_MF <- enrichGO(gene = genelist,
+                     OrgDb  = org.Hs.eg.db,keyType= 'ENSEMBL',
+                     ont  = "MF", pAdjustMethod = "BH",
+                     pvalueCutoff  = 0.05,qvalueCutoff  = 0.05)
+  ego_CC <- enrichGO(gene = genelist,
+                     OrgDb  = org.Hs.eg.db,keyType= 'ENSEMBL',
+                     ont  = "CC", pAdjustMethod = "BH",
+                     pvalueCutoff  = 0.05,qvalueCutoff  = 0.05)
+  
+  if(length(ego_BP$geneID) > 0){
+  	pdf(paste("/mnt/data5/BGI/UCB/tangchao/IR/IR_merge2/figure/", i, "_BP.pdf", sep = ""),height = 10,width = 15)
+  	print(dotplot(ego_BP,showCategory = 10,font.size = 16,title = "BP"))
+  	plotGOgraph(ego_BP,firstSigNodes = 15, useInfo = "all")
+  	enrichMap(ego_BP,n = 30, vertex.label.font = 1,cex = 1, font.size = 1)
+  	dev.off()
+  }
+  if(length(ego_MF$geneID) > 0){
+  	pdf(paste("/mnt/data5/BGI/UCB/tangchao/IR/IR_merge2/figure/", i, "_MF.pdf", sep = ""),height = 10,width = 15)
+  	print(dotplot(ego_MF,showCategory = 10,font.size = 16,title = "MF"))
+  	plotGOgraph(ego_MF,firstSigNodes = 15, useInfo = "all")
+  	enrichMap(ego_MF,n = 30, vertex.label.font = 1,cex = 1, font.size = 1)
+  	dev.off()
+  }
+  if(length(ego_CC$geneID) > 0){
+  	pdf(paste("/mnt/data5/BGI/UCB/tangchao/IR/IR_merge2/figure/", i, "_CC.pdf", sep = ""),height = 10,width = 15)
+  	print(dotplot(ego_CC,showCategory = 10,font.size = 16,title = "CC"))
+  	plotGOgraph(ego_CC,firstSigNodes = 15, useInfo = "all")
+  	enrichMap(ego_CC,n = 30, vertex.label.font = 1,cex = 1, font.size = .4)
+  	dev.off()
+  }  
+}
+
+
+
+
+
+
+
+

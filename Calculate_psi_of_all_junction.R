@@ -117,9 +117,9 @@ length(psi_sj_same_end)
 dim(psi_sj_same_start_table)
 # [1] 460327   3574
 dim(psi_sj_same_end_table)
-# [1] 460327   3574
+# [1] 146930   3574
 
-
+save(psi_sj_same_start_table,psi_sj_same_end_table, file = "/mnt/data5/BGI/UCB/tangchao/DSU/RData/psi_list_left_right_table.RData")
 
 
 
