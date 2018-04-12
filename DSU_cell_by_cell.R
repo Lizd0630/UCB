@@ -4,8 +4,6 @@
 require(parallel)
 library(dplyr)
 library(plyr)
-library(pryr)
-require(parallel)
 library(ggplot2)
 library(cowplot)
 library(GenomicRanges)
